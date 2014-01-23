@@ -12,7 +12,7 @@
 # 排序依据：按第一个逗号(,)前的词/词组排序，忽略大小写，
 #           稳定排序（相等条目次序不变）
 
-tmpfile="tmp"
+tmpfile="$(mktemp)"
 CDIFF=""
 
 # check whether color diff is available
@@ -22,5 +22,5 @@ type cdiff > /dev/null 2>&1
 # Remove first line (header).
 LC_ALL=C tail -n +2 glossary.csv > "$tmpfile"
 # Diff with sorted version.
-LC_ALL=C sort -f -t , -k 1,1 -s tmp | diff -u "$tmpfile" - | $CDIFF
+LC_ALL=C sort -f -t , -k 1,1 -s "$tmpfile" | diff -u "$tmpfile" - | $CDIFF
 rm "$tmpfile"
