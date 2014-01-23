@@ -19,6 +19,8 @@ CDIFF=""
 type cdiff > /dev/null 2>&1
 [ $? -eq 0 ] && CDIFF="cdiff" || CDIFF="less"
 
-LC_ALL=C grep '^[[:alpha:]]' glossary.csv > "$tmpfile"
+# Remove first line (header).
+LC_ALL=C tail -n +2 glossary.csv > "$tmpfile"
+# Diff with sorted version.
 LC_ALL=C sort -f -t , -k 1,1 -s tmp | diff -u "$tmpfile" - | $CDIFF
 rm "$tmpfile"
